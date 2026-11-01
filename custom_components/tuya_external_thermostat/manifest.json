@@ -5,8 +5,8 @@
   "config_flow": true,
   "dependencies": ["tuya"],
   "documentation": "https://github.com/kuzzrus/Tuvio-external-thermostat",
-  "integration_type": "helper",
+  "integration_type": "device",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/kuzzrus/Tuvio-external-thermostat/issues",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
