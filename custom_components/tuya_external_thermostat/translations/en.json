@@ -1,0 +1,102 @@
+{
+  "title": "Tuya External Thermostat",
+  "config": {
+    "abort": {
+      "already_configured": "An external thermostat is already configured for this Tuya climate entity."
+    },
+    "error": {
+      "invalid_settings": "The active heat setpoint must be above its idle setpoint, and the active cool setpoint must be below its idle setpoint.",
+      "sensor_unavailable": "Select an available temperature sensor with a numeric value.",
+      "target_no_supported_mode": "The selected entity does not support heating or cooling.",
+      "target_no_temperature": "The selected entity does not support a target temperature.",
+      "target_not_found": "The selected climate entity was not found.",
+      "target_not_tuya": "Select a climate entity provided by the official Tuya integration."
+    },
+    "step": {
+      "user": {
+        "title": "Set up an external thermostat",
+        "description": "Choose the Tuya air conditioner and the room temperature sensor. All temperatures below are stored in °C.",
+        "data": {
+          "name": "Name",
+          "target_climate": "Tuya air conditioner",
+          "sensor": "Room temperature sensor",
+          "activation_hysteresis": "Activation hysteresis",
+          "deactivation_hysteresis": "Deactivation hysteresis",
+          "heat_active_temperature": "Heat active setpoint",
+          "heat_idle_temperature": "Heat idle setpoint",
+          "cool_active_temperature": "Cool active setpoint",
+          "cool_idle_temperature": "Cool idle setpoint"
+        },
+        "data_description": {
+          "activation_hysteresis": "Heat starts below the room target by this value. Cooling starts above the target by this value.",
+          "deactivation_hysteresis": "Heat idles above the room target by this value. Cooling idles below the target by this value.",
+          "heat_active_temperature": "Setpoint sent to Tuya when heating is needed.",
+          "heat_idle_temperature": "Setpoint sent when the room is warm enough, so heating stops without powering the unit off.",
+          "cool_active_temperature": "Setpoint sent to Tuya when cooling is needed.",
+          "cool_idle_temperature": "Setpoint sent when the room is cool enough, so cooling stops without powering the unit off."
+        }
+      }
+    }
+  },
+  "options": {
+    "error": {
+      "invalid_settings": "The active heat setpoint must be above its idle setpoint, and the active cool setpoint must be below its idle setpoint.",
+      "sensor_unavailable": "Select an available temperature sensor with a numeric value."
+    },
+    "step": {
+      "init": {
+        "title": "External thermostat settings",
+        "data": {
+          "sensor": "Room temperature sensor",
+          "activation_hysteresis": "Activation hysteresis",
+          "deactivation_hysteresis": "Deactivation hysteresis",
+          "heat_active_temperature": "Heat active setpoint",
+          "heat_idle_temperature": "Heat idle setpoint",
+          "cool_active_temperature": "Cool active setpoint",
+          "cool_idle_temperature": "Cool idle setpoint"
+        }
+      }
+    }
+  },
+  "entity": {
+    "climate": {
+      "external_thermostat": {
+        "name": "External thermostat"
+      }
+    },
+    "number": {
+      "activation_hysteresis": {
+        "name": "Activation hysteresis"
+      },
+      "deactivation_hysteresis": {
+        "name": "Deactivation hysteresis"
+      },
+      "heat_active_temperature": {
+        "name": "Heat active setpoint"
+      },
+      "heat_idle_temperature": {
+        "name": "Heat idle setpoint"
+      },
+      "cool_active_temperature": {
+        "name": "Cool active setpoint"
+      },
+      "cool_idle_temperature": {
+        "name": "Cool idle setpoint"
+      }
+    }
+  },
+  "exceptions": {
+    "control_failed": {
+      "message": "The Tuya air conditioner did not accept the requested change. Check the integration log."
+    },
+    "entity_unavailable": {
+      "message": "The Tuya air conditioner or room temperature sensor is unavailable."
+    },
+    "invalid_thermostat_setting": {
+      "message": "The value is outside the allowed range or conflicts with its paired setpoint."
+    },
+    "unsupported_hvac_mode": {
+      "message": "The selected Tuya air conditioner does not support this HVAC mode."
+    }
+  }
+}

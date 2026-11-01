@@ -1,0 +1,29 @@
+{
+  "entity": {
+    "climate": {
+      "external_thermostat": {
+        "default": "mdi:thermostat"
+      }
+    },
+    "number": {
+      "activation_hysteresis": {
+        "default": "mdi:swap-vertical"
+      },
+      "deactivation_hysteresis": {
+        "default": "mdi:swap-vertical"
+      },
+      "heat_active_temperature": {
+        "default": "mdi:thermometer-chevron-up"
+      },
+      "heat_idle_temperature": {
+        "default": "mdi:thermometer-low"
+      },
+      "cool_active_temperature": {
+        "default": "mdi:thermometer-chevron-down"
+      },
+      "cool_idle_temperature": {
+        "default": "mdi:thermometer-high"
+      }
+    }
+  }
+}
