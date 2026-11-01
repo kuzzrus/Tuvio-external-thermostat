@@ -1,5 +1,5 @@
 {
-  "title": "Tuya External Thermostat",
+  "title": "Tuvio External Thermostat",
   "config": {
     "abort": {
       "already_configured": "An external thermostat is already configured for this Tuya climate entity."

@@ -141,7 +141,7 @@ class TuyaExternalThermostatConfigFlow(ConfigFlow, domain=DOMAIN):
             {
                 vol.Required(
                     CONF_NAME,
-                    default=defaults.get(CONF_NAME, "Tuya external thermostat"),
+                    default=defaults.get(CONF_NAME, "Tuvio external thermostat"),
                 ): TextSelector(TextSelectorConfig()),
                 climate_key: _entity_selector(integration="tuya"),
                 sensor_key: _sensor_selector(),
@@ -197,7 +197,7 @@ class TuyaExternalThermostatConfigFlow(ConfigFlow, domain=DOMAIN):
                 if not name:
                     name = str(
                         climate_state.attributes.get(
-                            ATTR_FRIENDLY_NAME, "Tuya external thermostat"
+                            ATTR_FRIENDLY_NAME, "Tuvio external thermostat"
                         )
                     )
                 data = {

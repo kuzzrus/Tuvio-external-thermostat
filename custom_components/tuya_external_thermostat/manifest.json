@@ -1,6 +1,6 @@
 {
   "domain": "tuya_external_thermostat",
-  "name": "Tuya External Thermostat",
+  "name": "Tuvio External Thermostat",
   "codeowners": ["@kuzzrus"],
   "config_flow": true,
   "dependencies": ["tuya"],
@@ -8,5 +8,5 @@
   "integration_type": "device",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/kuzzrus/Tuvio-external-thermostat/issues",
-  "version": "0.1.1"
+  "version": "0.1.2"
 }
