@@ -385,26 +385,9 @@ class TuyaExternalThermostat(ClimateEntity, RestoreEntity):
                 blocking=True,
             )
 
-    async def _async_turn_target_off(self) -> None:
-        """Turn the physical Tuya climate entity off once."""
-        state = self.hass.states.get(self._target_entity_id)
-        if state is None or state.state == HVACMode.OFF:
-            return
-        await self.hass.services.async_call(
-            CLIMATE_DOMAIN,
-            SERVICE_SET_HVAC_MODE,
-            {
-                ATTR_ENTITY_ID: self._target_entity_id,
-                ATTR_HVAC_MODE: HVACMode.OFF,
-            },
-            blocking=True,
-        )
-
-    def _ensure_available(self, *, require_sensor: bool = True) -> None:
+    def _ensure_available(self) -> None:
         """Raise a translated error when control is unavailable."""
-        if not self._target_available or (
-            require_sensor and self._attr_current_temperature is None
-        ):
+        if not self._target_available or self._attr_current_temperature is None:
             raise HomeAssistantError(
                 translation_domain=DOMAIN,
                 translation_key="entity_unavailable",
@@ -419,7 +402,8 @@ class TuyaExternalThermostat(ClimateEntity, RestoreEntity):
             return
 
         hvac_mode = HVACMode(requested_mode) if requested_mode is not None else None
-        self._ensure_available(require_sensor=hvac_mode != HVACMode.OFF)
+        if hvac_mode != HVACMode.OFF:
+            self._ensure_available()
         if temperature is not None:
             self._attr_target_temperature = float(temperature)
         if hvac_mode is not None:
@@ -443,14 +427,14 @@ class TuyaExternalThermostat(ClimateEntity, RestoreEntity):
                 translation_domain=DOMAIN,
                 translation_key="unsupported_hvac_mode",
             )
-        self._ensure_available(require_sensor=hvac_mode != HVACMode.OFF)
+        if hvac_mode != HVACMode.OFF:
+            self._ensure_available()
 
         try:
             if hvac_mode == HVACMode.OFF:
                 self._attr_hvac_mode = HVACMode.OFF
                 self._running = False
                 self._update_hvac_action()
-                await self._async_turn_target_off()
             else:
                 self._attr_hvac_mode = hvac_mode
                 self._last_hvac_mode = hvac_mode
@@ -470,5 +454,5 @@ class TuyaExternalThermostat(ClimateEntity, RestoreEntity):
 
     @override
     async def async_turn_off(self) -> None:
-        """Turn off the virtual thermostat and Tuya air conditioner."""
+        """Release automatic control without turning off the Tuya unit."""
         await self.async_set_hvac_mode(HVACMode.OFF)

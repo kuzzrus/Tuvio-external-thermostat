@@ -126,3 +126,52 @@ async def test_cooling_returns_to_idle_setpoint(tmp_path: Any) -> None:
         )
     ]
     hass.stop()
+
+
+@pytest.mark.asyncio
+async def test_turning_off_releases_control_without_turning_off_target(
+    tmp_path: Any,
+) -> None:
+    """Turning off the helper leaves the physical Tuya unit untouched."""
+    hass = HomeAssistant(str(tmp_path))
+    calls: list[tuple[str, dict[str, Any]]] = []
+
+    async def record_call(call: ServiceCall) -> None:
+        calls.append((call.service, dict(call.data)))
+
+    hass.services.async_register("climate", SERVICE_SET_HVAC_MODE, record_call)
+    hass.services.async_register("climate", SERVICE_SET_TEMPERATURE, record_call)
+    hass.states.async_set(TARGET, HVACMode.COOL, {ATTR_TEMPERATURE: 16.0})
+
+    entity = TuyaExternalThermostat(
+        _entry(), DeviceInfo(identifiers={(DOMAIN, "test-entry")})
+    )
+    entity.hass = hass
+    entity.async_write_ha_state = lambda: None
+    entity._attr_hvac_mode = HVACMode.COOL
+    entity._attr_current_temperature = 27.0
+
+    await entity.async_turn_off()
+
+    assert entity.hvac_mode == HVACMode.OFF
+    assert hass.states[TARGET].state == HVACMode.COOL
+    assert calls == []
+    hass.stop()
+
+
+@pytest.mark.asyncio
+async def test_turning_off_is_allowed_when_target_is_unavailable(tmp_path: Any) -> None:
+    """Releasing control does not depend on Tuya or sensor availability."""
+    hass = HomeAssistant(str(tmp_path))
+    entity = TuyaExternalThermostat(
+        _entry(), DeviceInfo(identifiers={(DOMAIN, "test-entry")})
+    )
+    entity.hass = hass
+    entity.async_write_ha_state = lambda: None
+    entity._attr_hvac_mode = HVACMode.HEAT
+    entity._attr_current_temperature = None
+
+    await entity.async_turn_off()
+
+    assert entity.hvac_mode == HVACMode.OFF
+    hass.stop()
